@@ -375,7 +375,6 @@ from open_webui.env import (
 from open_webui.utils.models import (
     get_all_models,
     get_all_base_models,
-    check_model_access,
 )
 from open_webui.utils.chat import (
     generate_chat_completion as chat_completion_handler,
@@ -1167,8 +1166,9 @@ async def chat_completion(
         )
 
     try:
+        print("@@@ main 111")
         response = await chat_completion_handler(request, form_data, user)
-
+        print("@@@ main 222")
         return await process_chat_response(
             request, response, form_data, user, metadata, None, events, tasks
         )

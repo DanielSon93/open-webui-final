@@ -1169,23 +1169,23 @@ async def generate_chat_completion(
             payload = apply_model_system_prompt_to_body(params, payload, metadata, user)
 
         # Check if user has access to the model
-        if not bypass_filter and user.role == "user":
-            if not (
-                user.id == model_info.user_id
-                or has_access(
-                    user.id, type="read", access_control=model_info.access_control
-                )
-            ):
-                raise HTTPException(
-                    status_code=403,
-                    detail="Model not found",
-                )
-    elif not bypass_filter:
-        if user.role != "admin":
-            raise HTTPException(
-                status_code=403,
-                detail="Model not found",
-            )
+    #     if not bypass_filter and user.role == "user":
+    #         if not (
+    #             user.id == model_info.user_id
+    #             or has_access(
+    #                 user.id, type="read", access_control=model_info.access_control
+    #             )
+    #         ):
+    #             raise HTTPException(
+    #                 status_code=403,
+    #                 # detail="Model not found",
+    #             )
+    # elif not bypass_filter:
+    #     if user.role != "admin":
+    #         raise HTTPException(
+    #             status_code=403,
+    #             # detail="Model not found",
+    #         )
 
     if ":" not in payload["model"]:
         payload["model"] = f"{payload['model']}:latest"
@@ -1272,23 +1272,23 @@ async def generate_openai_completion(
             payload = apply_model_params_to_body_openai(params, payload)
 
         # Check if user has access to the model
-        if user.role == "user":
-            if not (
-                user.id == model_info.user_id
-                or has_access(
-                    user.id, type="read", access_control=model_info.access_control
-                )
-            ):
-                raise HTTPException(
-                    status_code=403,
-                    detail="Model not found",
-                )
-    else:
-        if user.role != "admin":
-            raise HTTPException(
-                status_code=403,
-                detail="Model not found",
-            )
+    #     if user.role == "user":
+    #         if not (
+    #             user.id == model_info.user_id
+    #             or has_access(
+    #                 user.id, type="read", access_control=model_info.access_control
+    #             )
+    #         ):
+    #             raise HTTPException(
+    #                 status_code=403,
+    #                 # detail="Model not found",
+    #             )
+    # else:
+    #     if user.role != "admin":
+    #         raise HTTPException(
+    #             status_code=403,
+    #             # detail="Model not found",
+            # )
 
     if ":" not in payload["model"]:
         payload["model"] = f"{payload['model']}:latest"
@@ -1352,23 +1352,23 @@ async def generate_openai_chat_completion(
             payload = apply_model_system_prompt_to_body(params, payload, metadata, user)
 
         # Check if user has access to the model
-        if user.role == "user":
-            if not (
-                user.id == model_info.user_id
-                or has_access(
-                    user.id, type="read", access_control=model_info.access_control
-                )
-            ):
-                raise HTTPException(
-                    status_code=403,
-                    detail="Model not found",
-                )
-    else:
-        if user.role != "admin":
-            raise HTTPException(
-                status_code=403,
-                detail="Model not found",
-            )
+        # if user.role == "user":
+        #     if not (
+        #         user.id == model_info.user_id
+        #         or has_access(
+        #             user.id, type="read", access_control=model_info.access_control
+        #         )
+        #     ):
+        #         raise HTTPException(
+        #             status_code=403,
+        #             # detail="Model not found",
+        #         )
+    # else:
+    #     if user.role != "admin":
+    #         raise HTTPException(
+    #             status_code=403,
+    #             # detail="Model not found",
+    #         )
 
     if ":" not in payload["model"]:
         payload["model"] = f"{payload['model']}:latest"

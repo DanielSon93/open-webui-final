@@ -608,88 +608,40 @@ async def   generate_chat_completion(
     model_id = form_data.get("model")
     model_info = Models.get_model_by_id(model_id)
 
-    # Check model info and override the payload
-    # if model_info:
-    #     if model_info.base_model_id:
-    #         payload["model"] = model_info.base_model_id
-    #         model_id = model_info.base_model_id
-
-    #     params = model_info.params.model_dump()
-    #     payload = apply_model_params_to_body_openai(params, payload)
-    #     payload = apply_model_system_prompt_to_body(params, payload, metadata, user)
-
-    #     # Check if user has access to the model
-    #     # if not bypass_filter and user.role == "user":
-    #     #     if not (
-    #     #         user.id == model_info.user_id
-    #     #         or has_access(
-    #     #             user.id, type="read", access_control=model_info.access_control
-    #     #         )
-    #     #     ):
-    #     #         raise HTTPException(
-    #     #             status_code=403,
-    #     #             detail="Model not found",
-    #     #         )
-    # elif not bypass_filter:
-    #     if user.role != "admin":
-    #         raise HTTPException(
-    #             status_code=403,
-    #             detail="Model not found",
-    #         )
-
-    # await get_all_models(request, user=user)
-    # model = request.app.state.OPENAI_MODELS.get(model_id)
-    # if model:
-    #     idx = model["urlIdx"]
-    # else:
-    #     raise HTTPException(
-    #         status_code=404,
-    #         detail="Model not found",
-    #     )
-
+    print("@@@ generate_chat_completion 111")
     # Get the API config for the model
-    api_config = request.app.state.config.OPENAI_API_CONFIGS.get(
-        str(idx),
-        request.app.state.config.OPENAI_API_CONFIGS.get(
-            request.app.state.config.OPENAI_API_BASE_URLS[idx], {}
-        ),  # Legacy support
-    )
+    # api_config = request.app.state.config.OPENAI_API_CONFIGS.get(
+    #     str(idx),
+    #     request.app.state.config.OPENAI_API_CONFIGS.get(
+    #         request.app.state.config.OPENAI_API_BASE_URLS[idx], {}
+    #     ),  # Legacy support
+    # )
 
-    prefix_id = api_config.get("prefix_id", None)
-    if prefix_id:
-        payload["model"] = payload["model"].replace(f"{prefix_id}.", "")
+    # prefix_id = api_config.get("prefix_id", None)
+    # if prefix_id:
+    #     payload["model"] = payload["model"].replace(f"{prefix_id}.", "")
 
-    # Add user info to the payload if the model is a pipeline
-    # if "pipeline" in model and model.get("pipeline"):
-    #     payload["user"] = {
-    #         "name": user.name,
-    #         "id": user.id,
-    #         "email": user.email,
-    #         "role": user.role,
-    #     }
-
-    url = request.app.state.config.OPENAI_API_BASE_URLS[idx]
-    key = request.app.state.config.OPENAI_API_KEYS[idx]
+    # url = request.app.state.config.OPENAI_API_BASE_URLS[idx]
+    # key = request.app.state.config.OPENAI_API_KEYS[idx]
 
     # Check if model is from "o" series
-    is_o_series = payload["model"].lower().startswith(("o1", "o3", "o4"))
-    if is_o_series:
-        payload = openai_o_series_handler(payload)
-    elif "api.openai.com" not in url:
-        # Remove "max_completion_tokens" from the payload for backward compatibility
-        if "max_completion_tokens" in payload:
-            payload["max_tokens"] = payload["max_completion_tokens"]
-            del payload["max_completion_tokens"]
+    # is_o_series = payload["model"].lower().startswith(("o1", "o3", "o4"))
+    # if is_o_series:
+    #     payload = openai_o_series_handler(payload)
+    # elif "api.openai.com" not in url:
+    #     # Remove "max_completion_tokens" from the payload for backward compatibility
+    #     if "max_completion_tokens" in payload:
+    #         payload["max_tokens"] = payload["max_completion_tokens"]
+    #         del payload["max_completion_tokens"]
+    
+    # if "max_tokens" in payload and "max_completion_tokens" in payload:
+    #     del payload["max_tokens"]
 
-    if "max_tokens" in payload and "max_completion_tokens" in payload:
-        del payload["max_tokens"]
-
-    # Convert the modified body back to JSON
-    if "logit_bias" in payload:
-        payload["logit_bias"] = json.loads(
-            convert_logit_bias_input_to_json(payload["logit_bias"])
-        )
-
+    # # Convert the modified body back to JSON
+    # if "logit_bias" in payload:
+    #     payload["logit_bias"] = json.loads(
+    #         convert_logit_bias_input_to_json(payload["logit_bias"])
+        # )
     payload = json.dumps(payload)
 
     r = None
@@ -704,29 +656,10 @@ async def   generate_chat_completion(
 
         r = await session.request(
             method="POST",
-            url=f"http://test-api.photoguraphy.com",
+            url=f"http://10.5.145.118:8083",
             data=payload,
             headers={
-                "Authorization": f"Bearer {key}",
                 "Content-Type": "application/json",
-                **(
-                    {
-                        "HTTP-Referer": "https://openwebui.com/",
-                        "X-Title": "Open WebUI",
-                    }
-                    if "openrouter.ai" in url
-                    else {}
-                ),
-                **(
-                    {
-                        "X-OpenWebUI-User-Name": user.name,
-                        "X-OpenWebUI-User-Id": user.id,
-                        "X-OpenWebUI-User-Email": user.email,
-                        "X-OpenWebUI-User-Role": user.role,
-                    }
-                    if ENABLE_FORWARD_USER_INFO_HEADERS
-                    else {}
-                ),
             },
             ssl=AIOHTTP_CLIENT_SESSION_SSL,
         )
