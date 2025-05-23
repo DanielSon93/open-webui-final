@@ -1255,7 +1255,7 @@
 		if (JSON.stringify(selectedModels) !== JSON.stringify(_selectedModels)) {
 			selectedModels = _selectedModels;
 		}
-		selectedModels = ["gpt-4"]
+		selectedModels = ['gpt-4'];
 		if (userPrompt === '' && files.length === 0) {
 			toast.error($i18n.t('Please enter a prompt'));
 			return;
@@ -1372,25 +1372,25 @@
 		// Create response messages for each selected model
 		for (const [_modelIdx, modelId] of selectedModelIds.entries()) {
 			const model = {
-					"id": "gpt-4",
-					"object": "model",
-					"created": 1687882411,
-					"owned_by": "openai",
-					"connection_type": "external",
-					"name": "gpt-4",
-					"openai": {
-						"id": "gpt-4",
-						"object": "model",
-						"created": 1687882411,
-						"owned_by": "openai",
-						"connection_type": "external"
-					},
-					"urlIdx": 0,
-					"actions": [],
-					"filters": [],
-					"tags": []
-				}
-			
+				id: 'gpt-4',
+				object: 'model',
+				created: 1687882411,
+				owned_by: 'openai',
+				connection_type: 'external',
+				name: 'gpt-4',
+				openai: {
+					id: 'gpt-4',
+					object: 'model',
+					created: 1687882411,
+					owned_by: 'openai',
+					connection_type: 'external'
+				},
+				urlIdx: 0,
+				actions: [],
+				filters: [],
+				tags: []
+			};
+
 			if (model) {
 				let responseMessageId = uuidv4();
 				let responseMessage = {
@@ -1429,31 +1429,31 @@
 		}
 
 		await tick();
-		
+
 		_history = JSON.parse(JSON.stringify(history));
 		// Save chat after all messages have been created
 		await saveChatHandler(_chatId, _history);
 		await Promise.all(
 			selectedModelIds.map(async (modelId, _modelIdx) => {
 				const model = {
-					"id": "gpt-4",
-					"object": "model",
-					"created": 1687882411,
-					"owned_by": "openai",
-					"connection_type": "external",
-					"name": "gpt-4",
-					"openai": {
-						"id": "gpt-4",
-						"object": "model",
-						"created": 1687882411,
-						"owned_by": "openai",
-						"connection_type": "external"
+					id: 'gpt-4',
+					object: 'model',
+					created: 1687882411,
+					owned_by: 'openai',
+					connection_type: 'external',
+					name: 'gpt-4',
+					openai: {
+						id: 'gpt-4',
+						object: 'model',
+						created: 1687882411,
+						owned_by: 'openai',
+						connection_type: 'external'
 					},
-					"urlIdx": 0,
-					"actions": [],
-					"filters": [],
-					"tags": []
-				}
+					urlIdx: 0,
+					actions: [],
+					filters: [],
+					tags: []
+				};
 				if (model) {
 					const messages = createMessagesList(_history, parentId);
 					// If there are image files, check if model is vision capable
@@ -1662,23 +1662,23 @@
 					)
 				},
 				model_item: {
-					"id": "gpt-4",
-					"object": "model",
-					"created": 1687882411,
-					"owned_by": "openai",
-					"connection_type": "external",
-					"name": "gpt-4",
-					"openai": {
-						"id": "gpt-4",
-						"object": "model",
-						"created": 1687882411,
-						"owned_by": "openai",
-						"connection_type": "external"
+					id: 'gpt-4',
+					object: 'model',
+					created: 1687882411,
+					owned_by: 'openai',
+					connection_type: 'external',
+					name: 'gpt-4',
+					openai: {
+						id: 'gpt-4',
+						object: 'model',
+						created: 1687882411,
+						owned_by: 'openai',
+						connection_type: 'external'
 					},
-					"urlIdx": 0,
-					"actions": [],
-					"filters": [],
-					"tags": []
+					urlIdx: 0,
+					actions: [],
+					filters: [],
+					tags: []
 				},
 
 				session_id: $socket?.id,
@@ -1709,7 +1709,7 @@
 			},
 			`${WEBUI_BASE_URL}/api`
 		).catch(async (error) => {
-			toast.error(`${error}`);
+			// toast.error(`${error}`);
 
 			responseMessage.error = {
 				content: error
@@ -1721,7 +1721,7 @@
 			return null;
 		});
 
-		console.log("응답 : ", res)
+		console.log('응답 : ', res);
 
 		if (res) {
 			if (res.error) {

@@ -608,7 +608,6 @@ async def   generate_chat_completion(
     model_id = form_data.get("model")
     model_info = Models.get_model_by_id(model_id)
 
-    print("@@@ generate_chat_completion 111")
     # Get the API config for the model
     # api_config = request.app.state.config.OPENAI_API_CONFIGS.get(
     #     str(idx),

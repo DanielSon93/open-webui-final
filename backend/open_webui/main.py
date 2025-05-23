@@ -1166,9 +1166,7 @@ async def chat_completion(
         )
 
     try:
-        print("@@@ main 111")
         response = await chat_completion_handler(request, form_data, user)
-        print("@@@ main 222")
         return await process_chat_response(
             request, response, form_data, user, metadata, None, events, tasks
         )

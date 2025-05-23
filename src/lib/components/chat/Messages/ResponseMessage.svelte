@@ -42,7 +42,7 @@
 
 	import DeleteConfirmDialog from '$lib/components/common/ConfirmDialog.svelte';
 
-	import Error from './Error.svelte';
+	// import Error from './Error.svelte';
 	import Citations from './Citations.svelte';
 	import CodeExecutions from './CodeExecutions.svelte';
 	import ContentRenderer from './ContentRenderer.svelte';
@@ -845,9 +845,9 @@
 									/>
 								{/if}
 
-								{#if message?.error}
+								<!-- {#if message?.error}
 									<Error content={message?.error?.content ?? message.content} />
-								{/if}
+								{/if} -->
 
 								{#if (message?.sources || message?.citations) && (model?.info?.meta?.capabilities?.citations ?? true)}
 									<Citations id={message?.id} sources={message?.sources ?? message?.citations} />

@@ -161,10 +161,8 @@ async def generate_chat_completion(
     user: Any,
     bypass_filter: bool = False,
 ):
-    log.debug(f"generate_chat_completion: {form_data}")
     if BYPASS_MODEL_ACCESS_CONTROL:
         bypass_filter = True
-    print("@@@ generate_chat_completion 111 : ")
     if hasattr(request.state, "metadata"):
         if "metadata" not in form_data:
             form_data["metadata"] = request.state.metadata
@@ -173,7 +171,6 @@ async def generate_chat_completion(
                 **form_data["metadata"],
                 **request.state.metadata,
             }
-    print("@@@ generate_chat_completion 222 : ")
     if getattr(request.state, "direct", False):
         return await generate_direct_chat_completion(
             request, form_data, user=user, models=None

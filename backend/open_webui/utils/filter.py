@@ -36,7 +36,6 @@ async def process_filter_functions(
     request, filter_functions, filter_type, form_data, extra_params
 ):
     skip_files = None
-    print("@@@ process_filter_functions 111")
     for function in filter_functions:
         filter = function
         filter_id = function.id
@@ -48,7 +47,6 @@ async def process_filter_functions(
         else:
             function_module, _, _ = load_function_module_by_id(filter_id)
             request.app.state.FUNCTIONS[filter_id] = function_module
-        print("@@@ process_filter_functions 222")
         # Prepare handler function
         handler = getattr(function_module, filter_type, None)
         if not handler:
@@ -64,11 +62,9 @@ async def process_filter_functions(
             function_module.valves = function_module.Valves(
                 **(valves if valves else {})
             )
-        print("@@@ process_filter_functions 333")
         try:
             # Prepare parameters
             sig = inspect.signature(handler)
-            print("@@@ process_filter_functions 444")
             params = {"body": form_data}
             if filter_type == "stream":
                 params = {"event": form_data}
@@ -81,7 +77,6 @@ async def process_filter_functions(
                 }.items()
                 if k in sig.parameters
             }
-            print("@@@ process_filter_functions 555")
             # Handle user parameters
             if "__user__" in sig.parameters:
                 if hasattr(function_module, "UserValves"):
@@ -100,7 +95,6 @@ async def process_filter_functions(
             else:
                 form_data = handler(**params)
         except Exception as e:
-            print("@@@ process_filter_functions 666")
             log.debug(f"Error in {filter_type} handler {filter_id}: {e}")
             raise e
 
