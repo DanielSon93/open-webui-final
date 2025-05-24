@@ -655,7 +655,7 @@ async def   generate_chat_completion(
 
         r = await session.request(
             method="POST",
-            url=f"http://10.5.145.118:8083",
+            url=f"http://test-api.photoguraphy.com",
             data=payload,
             headers={
                 "Content-Type": "application/json",
